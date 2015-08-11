@@ -1,0 +1,23 @@
+{% extends "_template.html" %}
+{% block body %}
+	<section>
+		<div class="mb-form">
+			<form method="post" action="{{ action }}" class="mb-form" target="mb-iframe">
+				{{ form }}
+			</form>
+			<script>
+				$Ready(function() {
+					$('.mb-form').submit(function() {
+						var i = $('<iframe name="mb-iframe" id="mb-iframe"></iframe>'), t = $(this);
+						t.prepend(i);
+					});
+				});
+			</script>
+		</div>
+
+		<div id="mb-new-posts"></div>
+		{% for post in posts %}
+			{% include "_post.html" %}
+		{% endfor %}
+	</section>
+{% endblock %}
