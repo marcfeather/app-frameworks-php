@@ -7,14 +7,20 @@ class Framework extends \PHPfox\Unity\Objectify\Framework {
 
 	public function views($path) {
 		$this->_params['__views'] = $path;
+
+		return $this;
 	}
 
 	public function db($host, $user, $password, $database) {
 		$this->app->db->__connect($host, $user, $password, $database);
+
+		return $this;
 	}
 
 	public function set($params) {
 		$this->_params = $params;
+
+		return $this;
 	}
 
 	public function get($key) {

@@ -2,7 +2,7 @@
 
 namespace PHPfox\Unity\App;
 
-class Framework {
+final class Framework {
 	/**
 	 * @var \PHPfox\Unity\User\Framework
 	 */
@@ -72,12 +72,18 @@ class Framework {
 		'date' => 'Date'
 	];
 
-	public function __construct($callback) {
+	public function __construct($configFile) {
+		if (!file_exists($configFile)) {
+			exit('Config file is missing.');
+		}
+
 		foreach ($this->_load as $__key => $class) {
 			$this->{$__key} = (new \ReflectionClass('\\PHPfox\\Unity\\' . $class . '\\Framework'))->newInstance($this);
 		}
 
-		call_user_func($callback, $this);
+		$config = require($configFile);
+
+		call_user_func($config, $this);
 	}
 
 	public function error($message) {
