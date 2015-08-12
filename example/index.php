@@ -1,11 +1,11 @@
 <?php
 
-namespace PHPfox;
+use PHPfox\Unity\App\Framework;
 
-require(__DIR__ . '/../vendor/autoload.php');
-require(__DIR__ . '/../src/phpfox.php');
+// require(__DIR__ . '/../vendor/autoload.php');
+require(__DIR__ . '/../phpfox.php');
 
-new App(function(App $app) {
+new Framework(function(Framework $app) {
 	$configFile = __DIR__ . '/config.php';
 	if (!file_exists($configFile)) {
 		exit('Config file is missing.');
@@ -14,12 +14,12 @@ new App(function(App $app) {
 	$config = require($configFile);
 	call_user_func($config, $app);
 
-	$app->route->on($app->env->get('base'), function(App $app) {
+	$app->route->on($app->env->get('base'), function(Framework $app) {
 		$app->form->file('file', 'Select a File')
 			->textarea('caption', 'Caption')
 			->submit('Upload');
 
-		$app->form->success(function(App $app) {
+		$app->form->success(function(Framework $app) {
 			$content = $app->request->get('content');
 			$content = strip_tags($content);
 			if (mb_strlen($content) > 160) {
@@ -42,6 +42,8 @@ new App(function(App $app) {
 		foreach ($app->db->select('*')->from('posts')->order('post_id DESC')->limit(10)->all() as $post) {
 			$posts[] = $post;
 		}
+
+		print_r($posts);
 
 		$app->page->title('Posts');
 
